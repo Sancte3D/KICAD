@@ -22,7 +22,11 @@ contentSandbox.window.window = contentSandbox.window;
 vm.runInNewContext(source, contentSandbox, { filename: "decompressed-course-content.js" });
 const overrides = contentSandbox.window.PCB_ACADEMY_CONTENT || {};
 
-for (const relativeFile of ["content/practice-expansion.js", "content/practice-fixes.js"]) {
+for (const relativeFile of [
+  "content/practice-expansion.js",
+  "content/practice-fixes.js",
+  "content/fundamentals-expansion.js"
+]) {
   const fullPath = path.join(root, relativeFile);
   if (!fs.existsSync(fullPath)) throw new Error(`Missing ${relativeFile}`);
   contentSandbox.window.PCB_ACADEMY_CONTENT = overrides;
@@ -101,9 +105,50 @@ for (const requiredPracticeLesson of requiredPracticeLessons) {
   }
 }
 
+const electricity = lessons.find(item => item.id === "electricity");
+if (!electricity) {
+  errors.push("Missing first-principles electricity lesson.");
+} else {
+  const requiredPhrases = [
+    "U bedeutet Spannung",
+    "I bedeutet Strom",
+    "R bedeutet Widerstand",
+    "P bedeutet Leistung",
+    "Volt",
+    "Ampere",
+    "Ohm",
+    "Watt"
+  ];
+  const combined = [electricity.intro, electricity.concept, electricity.why, electricity.example, electricity.remember].join(" ");
+  for (const phrase of requiredPhrases) {
+    if (!combined.includes(phrase)) errors.push(`Electricity lesson must explicitly explain "${phrase}".`);
+  }
+  if (!Array.isArray(electricity.steps) || electricity.steps.length < 10) {
+    errors.push("Electricity lesson needs at least 10 ordered first-principles steps.");
+  }
+  if (!electricity.diagram?.includes("Formelzeichen") || !electricity.diagram?.includes("Einheit")) {
+    errors.push("Electricity lesson needs a symbol-to-unit reference table.");
+  }
+  if (!electricity.pcb?.includes("Leiterbahnen") || !electricity.pcb?.includes("Wärme")) {
+    errors.push("Electricity lesson must connect the four quantities to PCB consequences.");
+  }
+}
+
+const ohmsLaw = lessons.find(item => item.id === "ohms-law");
+if (!ohmsLaw) {
+  errors.push("Missing expanded Ohm's law lesson.");
+} else {
+  if (!Array.isArray(ohmsLaw.steps) || ohmsLaw.steps.length < 8) {
+    errors.push("Ohm's law lesson needs at least 8 ordered calculation steps.");
+  }
+  if (!ohmsLaw.concept?.includes("U = R × I") || !ohmsLaw.concept?.includes("I = U ÷ R") || !ohmsLaw.concept?.includes("R = U ÷ I")) {
+    errors.push("Ohm's law lesson must explain all three formula forms in words.");
+  }
+}
+
 if (errors.length) {
   console.error("PCB Academy validation failed:\n");
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log(`Validated ${lessons.length} complete lessons and ${taskIds.size} unique tasks, including datasheet and placement practice.`);
+console.log(`Validated ${lessons.length} complete lessons and ${taskIds.size} unique tasks, including first-principles fundamentals, datasheet reading and placement practice.`);
