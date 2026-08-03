@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PCB Academy</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="content/glossary/glossary.css">
 </head>
 <body>
   <div class="app">
@@ -18,7 +19,7 @@
 
     <main>
       <header>
-        <input id="search" placeholder="Lektionen und Begriffe durchsuchen">
+        <input id="search" placeholder="Lektionen, Begriffe und Abkürzungen durchsuchen">
         <button id="focus">Fokusmodus</button>
         <button id="resetProgress">Fortschritt zurücksetzen</button>
       </header>
@@ -26,11 +27,15 @@
       <section class="hero">
         <span>Vollständiger Lernpfad</span>
         <h2>Von den ersten elektrischen Größen bis zur Fertigungsfreigabe</h2>
-        <p>Jede Lektion erklärt zuerst den Begriff, danach den technischen Grund, den Ablauf, ein Beispiel, den Schaltplanbezug, die PCB-Umsetzung und typische Fehler. Die Checkliste kommt erst am Ende.</p>
+        <p>Jede Lektion beginnt mit einer verpflichtenden Begriffseinführung. Erst danach folgen Definition, technischer Grund, Ablauf, Beispiel, Schaltplanbezug, PCB-Umsetzung und typische Fehler.</p>
         <div class="stats">
           <div><small>Fortschritt</small><strong id="statProgress">0 %</strong></div>
           <div><small>Abgeschlossene Lektionen</small><strong id="statDone">0</strong></div>
           <div><small>Nächste Lektion</small><strong id="statNext">Kurs laden</strong></div>
+        </div>
+        <div class="coverage-banner">
+          <strong>39/39 Lektionen</strong>
+          <span>mit expliziten Begriffen, Abkürzungen und praktischen Folgen vor dem Haupttext</span>
         </div>
         <button class="action primary hero-action" id="continueCourse">Nächste offene Lektion öffnen</button>
       </section>
@@ -49,6 +54,13 @@
   <script src="content/practice-expansion.js"></script>
   <script src="content/practice-fixes.js"></script>
   <script src="content/fundamentals-expansion.js"></script>
+  <script src="content/glossary/glossary-01.js"></script>
+  <script src="content/glossary/glossary-02.js"></script>
+  <script src="content/glossary/glossary-03.js"></script>
+  <script src="content/glossary/glossary-04.js"></script>
+  <script src="content/glossary/glossary-05.js"></script>
+  <script src="content/glossary/glossary-06.js"></script>
+  <script src="content/glossary/lesson-terms.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
