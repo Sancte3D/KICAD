@@ -35,10 +35,51 @@ function nextCourseLesson() {
     || null;
 }
 
+function getLessonGlossary(lessonId) {
+  const glossary = window.PCB_ACADEMY_GLOSSARY || {};
+  const lessonTerms = window.PCB_ACADEMY_LESSON_TERMS || {};
+  return (lessonTerms[lessonId] || []).map(termId => ({
+    id: termId,
+    ...glossary[termId]
+  })).filter(term => term.label && term.definition && term.practice);
+}
+
+function buildGlossaryHtml(data) {
+  const terms = getLessonGlossary(data.id);
+  if (!terms.length) {
+    return `
+      <section class="lesson-glossary glossary-error">
+        <div class="section-label">Begriffe zuerst</div>
+        <h3>0. Begriffe und Abkürzungen</h3>
+        <p>Für diese Lektion fehlt die verpflichtende Begriffseinführung. Die Inhaltsprüfung sollte diesen Zustand verhindern.</p>
+      </section>
+    `;
+  }
+
+  return `
+    <section class="lesson-glossary">
+      <div class="section-label">Vor dem eigentlichen Inhalt</div>
+      <h3>0. Begriffe und Abkürzungen zuerst</h3>
+      <p class="glossary-intro">Diese Begriffe werden in der Lektion verwendet. Lies sie zuerst. Abkürzung, Bedeutung und praktische Folge werden getrennt erklärt.</p>
+      <div class="glossary-grid">
+        ${terms.map(term => `
+          <article class="glossary-card" id="term-${term.id}">
+            <h4>${term.label}</h4>
+            <p>${term.definition}</p>
+            <div class="glossary-practice"><strong>In der Praxis:</strong> ${term.practice}</div>
+            ${(term.aliases || []).length ? `<div class="glossary-aliases"><strong>Schreibweisen:</strong> ${term.aliases.join(", ")}</div>` : ""}
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
 function buildLessonHtml(data) {
   const list = items => `<ul>${items.map(item => `<li>${item}</li>`).join("")}</ul>`;
   const steps = `<ol>${data.steps.map(item => `<li>${item}</li>`).join("")}</ol>`;
   return `
+    ${buildGlossaryHtml(data)}
     <div class="lesson-intro"><p>${data.intro}</p></div>
     <h3>1. Was ist das?</h3><p>${data.concept}</p>
     <h3>2. Warum ist das wichtig?</h3><p>${data.why}</p>
@@ -57,7 +98,10 @@ function applyContentOverrides() {
   for (const lesson of PCB_ACADEMY.lessons) {
     const data = overrides[lesson.id];
     if (!data) continue;
-    Object.assign(lesson, data, { html: buildLessonHtml(data) });
+    Object.assign(lesson, data, {
+      glossary: getLessonGlossary(data.id),
+      html: buildLessonHtml(data)
+    });
   }
 }
 
@@ -80,12 +124,17 @@ function renderNavigation(filter = "") {
   nav.innerHTML = "";
 
   PCB_ACADEMY.lessons.forEach((lesson, index) => {
+    const glossaryText = (lesson.glossary || [])
+      .flatMap(term => [term.label, term.definition, term.practice, ...(term.aliases || [])])
+      .join(" ");
+
     const searchable = [
       lesson.title,
       lesson.chapter,
       lesson.objective,
       ...(lesson.keywords || []),
-      ...(lesson.tags || [])
+      ...(lesson.tags || []),
+      glossaryText
     ].join(" ").toLowerCase();
 
     if (normalized && !searchable.includes(normalized)) return;
@@ -173,6 +222,7 @@ function openLesson(id) {
         <span><b>Voraussetzung:</b> ${(lesson.requires || []).length ? lesson.requires.map(req => PCB_ACADEMY.lessons.find(x => x.id === req)?.title || req).join(", ") : "keine"}</span>
       </div>
       <div class="tags">${(lesson.tags || []).map(tag => `<span class="tag">${tag}</span>`).join("")}</div>
+      <div class="lesson-coverage"><strong>${(lesson.glossary || []).length}</strong> Begriffe werden vor dem Inhalt ausdrücklich eingeführt.</div>
     </article>
 
     <article class="lesson lesson-content">
@@ -210,7 +260,7 @@ function openLesson(id) {
       button.classList.add(correct ? "correct" : "wrong");
       container.querySelector(".quiz-feedback").textContent = correct
         ? "Richtig. Du kannst die Lektion jetzt mit der Checkliste prüfen."
-        : "Noch nicht. Lies die relevante Erklärung erneut und versuche es danach noch einmal.";
+        : "Noch nicht. Lies die Begriffseinführung und die relevante Erklärung erneut.";
     });
   });
 
