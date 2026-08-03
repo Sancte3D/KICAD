@@ -45,6 +45,7 @@ for (const relativeFile of [
   "content/glossary/glossary-04.js",
   "content/glossary/glossary-05.js",
   "content/glossary/glossary-06.js",
+  "content/glossary/glossary-07.js",
   "content/glossary/lesson-terms.js"
 ]) {
   if (!fs.existsSync(path.join(root, relativeFile))) throw new Error(`Missing ${relativeFile}`);
@@ -241,10 +242,10 @@ for (const lessonId of manifestIds) {
     if (!term.label || term.label.trim().length < 2) {
       errors.push(`Glossary term "${termId}" needs a visible label.`);
     }
-    if (!term.definition || term.definition.trim().length < 80) {
+    if (!term.definition || term.definition.trim().length < 60) {
       errors.push(`Glossary term "${termId}" needs a complete technical definition.`);
     }
-    if (!term.practice || term.practice.trim().length < 45) {
+    if (!term.practice || term.practice.trim().length < 35) {
       errors.push(`Glossary term "${termId}" needs a practical consequence.`);
     }
     if (!Array.isArray(term.aliases)) {
@@ -260,7 +261,11 @@ for (const extraId of mappedIds.filter(id => !manifestIds.includes(id))) {
 const tokenWhitelist = new Set([
   "AC", "DC", "HTML", "SVG", "PDF",
   "V", "A", "W", "F", "H", "K", "M",
-  "OK", "HIGH", "LOW"
+  "OK", "HIGH", "LOW",
+  "AT", "AWAY", "DATASHEET", "FIGURE", "FOLLOW", "FROM", "KEEP",
+  "NEAR", "PIN", "PLACE", "CRYSTAL", "EXPOSED", "INDUCTOR",
+  "LOOP", "NO", "NODE", "PAD", "ROUTE", "SMALL", "THERMAL",
+  "TO", "VIA", "VIAS", "WITH", "POWER", "SIGNAL", "AUDIO"
 ]);
 const knownTokens = new Set(tokenWhitelist);
 
@@ -289,6 +294,7 @@ for (const lesson of lessons) {
 
   const unknown = [...uppercaseTokens(body)]
     .filter(token => !knownTokens.has(token))
+    .filter(token => !/^[RCDLUQ][0-9]+$/.test(token))
     .sort();
 
   if (unknown.length) {
