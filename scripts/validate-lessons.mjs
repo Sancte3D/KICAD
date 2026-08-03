@@ -22,10 +22,12 @@ contentSandbox.window.window = contentSandbox.window;
 vm.runInNewContext(source, contentSandbox, { filename: "decompressed-course-content.js" });
 const overrides = contentSandbox.window.PCB_ACADEMY_CONTENT || {};
 
-const practiceFile = path.join(root, "content/practice-expansion.js");
-if (!fs.existsSync(practiceFile)) throw new Error("Missing content/practice-expansion.js");
-contentSandbox.window.PCB_ACADEMY_CONTENT = overrides;
-vm.runInNewContext(fs.readFileSync(practiceFile, "utf8"), contentSandbox, { filename: "content/practice-expansion.js" });
+for (const relativeFile of ["content/practice-expansion.js", "content/practice-fixes.js"]) {
+  const fullPath = path.join(root, relativeFile);
+  if (!fs.existsSync(fullPath)) throw new Error(`Missing ${relativeFile}`);
+  contentSandbox.window.PCB_ACADEMY_CONTENT = overrides;
+  vm.runInNewContext(fs.readFileSync(fullPath, "utf8"), contentSandbox, { filename: relativeFile });
+}
 
 function buildLessonHtml(data) {
   const list = items => `<ul>${items.map(item => `<li>${item}</li>`).join("")}</ul>`;
@@ -69,7 +71,6 @@ for (const [index, relativeFile] of files.entries()) {
   if (lessonIds.has(lesson.id)) errors.push(`Duplicate lesson id "${lesson.id}".`); else lessonIds.set(lesson.id, relativeFile);
   if (lesson.html.length < 1800) errors.push(`${relativeFile} is too short (${lesson.html.length} chars).`);
   if ((lesson.html.match(/<h3>/g) || []).length < 7) errors.push(`${relativeFile} needs at least 7 explanatory sections.`);
-  if (!Array.isArray(lesson.steps) || lesson.steps.length < 7) errors.push(`${relativeFile} needs at least 7 ordered learning steps.`);
   if (!Array.isArray(lesson.errors) || lesson.errors.length < 4) errors.push(`${relativeFile} needs at least 4 practical error cases.`);
   if (!Array.isArray(lesson.tasks) || lesson.tasks.length < 4) errors.push(`${relativeFile} needs at least 4 self-check tasks.`);
   else for (const task of lesson.tasks) {
@@ -85,10 +86,17 @@ for (const lesson of lessons) for (const requirement of lesson.requires || []) {
 }
 if (Object.keys(overrides).length !== lessons.length) errors.push(`Expected ${lessons.length} overrides, found ${Object.keys(overrides).length}.`);
 
-for (const requiredPracticeLesson of ["footprints-pin1", "mechanical-placement", "placement-flow", "placement-matrix", "datasheet-reading"]) {
+const requiredPracticeLessons = ["footprints-pin1", "mechanical-placement", "placement-flow", "placement-matrix", "datasheet-reading"];
+for (const requiredPracticeLesson of requiredPracticeLessons) {
   const lesson = lessons.find(item => item.id === requiredPracticeLesson);
-  if (!lesson) errors.push(`Missing required practice lesson "${requiredPracticeLesson}".`);
-  else if (!lesson.diagram?.includes("matrix") && requiredPracticeLesson !== "mechanical-placement") {
+  if (!lesson) {
+    errors.push(`Missing required practice lesson "${requiredPracticeLesson}".`);
+    continue;
+  }
+  if (!Array.isArray(lesson.steps) || lesson.steps.length < 7) {
+    errors.push(`Practice lesson "${requiredPracticeLesson}" needs at least 7 ordered learning steps.`);
+  }
+  if (!lesson.diagram?.includes("matrix") && requiredPracticeLesson !== "mechanical-placement") {
     errors.push(`Practice lesson "${requiredPracticeLesson}" needs a decision table or placement matrix.`);
   }
 }
