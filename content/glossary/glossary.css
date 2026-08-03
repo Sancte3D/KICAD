@@ -1,0 +1,106 @@
+.lesson-glossary {
+  margin: 0 0 26px;
+  padding: 0 0 26px;
+  border-bottom: 1px solid var(--line);
+}
+
+.lesson-glossary h3 {
+  margin: 7px 0 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  font-size: 24px !important;
+}
+
+.glossary-intro {
+  margin-top: 0;
+  color: var(--muted) !important;
+  max-width: 850px;
+}
+
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.glossary-card {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #0f151c;
+  padding: 15px;
+}
+
+.glossary-card h4 {
+  margin: 0 0 8px;
+  color: #eaf1ff;
+  font-size: 16px;
+}
+
+.glossary-card p {
+  margin: 0 0 11px;
+  color: #cbd4df;
+}
+
+.glossary-practice,
+.glossary-aliases {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.glossary-practice {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.glossary-practice strong {
+  color: #bff4d9;
+}
+
+.glossary-aliases {
+  margin-top: 7px;
+}
+
+.glossary-aliases strong {
+  color: #c5d8ff;
+}
+
+.glossary-error {
+  border: 1px solid var(--bad);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.lesson-coverage,
+.coverage-banner {
+  border: 1px solid rgba(60, 201, 135, .35);
+  background: rgba(60, 201, 135, .08);
+  color: #c9f7df;
+  border-radius: 10px;
+  padding: 11px 13px;
+  font-size: 13px;
+  margin-top: 13px;
+}
+
+.coverage-banner {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.coverage-banner strong {
+  font-size: 16px;
+}
+
+.coverage-banner span {
+  color: #b9c9c1;
+}
+
+@media (max-width: 760px) {
+  .glossary-grid {
+    grid-template-columns: 1fr;
+  }
+}
