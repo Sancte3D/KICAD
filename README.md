@@ -19,7 +19,7 @@ Jedes Snippet registriert sich über `PCB_ACADEMY.register({...})`. Über `requi
 
 ## Lernpfad
 
-Die erste Ausbaustufe enthält 30 aufeinander aufbauende Lektionen:
+Die aktuelle Ausbaustufe enthält 39 aufeinander aufbauende Lektionen:
 
 1. Elektrische Grundgrößen und Ohmsches Gesetz
 2. LED, Widerstand, Kondensator, Schutzdiode und MOSFET
@@ -34,6 +34,14 @@ Die erste Ausbaustufe enthält 30 aufeinander aufbauende Lektionen:
 11. ESD-Schutz an externen Anschlüssen
 12. Datenblätter lesen und Placement-Matrix erstellen
 13. vollständiges erstes PCB-Projekt
+14. physischer PCB-Stackup mit Core, Prepreg und Kupferlagen
+15. Referenzflächen und Rückstrompfade
+16. Through-, Blind-, Buried-, Stitching- und Thermal-Vias
+17. Kupferzonen, Clearances, Thermal Reliefs und Inseln
+18. Mask-, Paste-, Silkscreen-, Fab-, Courtyard- und Edge.Cuts-Layer
+19. KiCad Board Setup mit Constraints, Net Classes und Custom Rules
+20. konkrete Zweilagen- und Vierlagen-Designrezepte
+21. Layer-Planungsübung für USB-C, MCU, Display und Audio
 
 Die Lektionen erklären nicht nur Bauteilfunktionen, sondern insbesondere:
 
@@ -42,7 +50,13 @@ Die Lektionen erklären nicht nur Bauteilfunktionen, sondern insbesondere:
 - welche Schleifen klein bleiben müssen
 - von welchen Störquellen Abstand nötig ist
 - in welcher Reihenfolge Funktionsblöcke angeordnet werden
+- welche Layer welche physische und elektrische Aufgabe haben
+- welche Referenzfläche zu schnellen Signalen gehört
+- wie Layerwechsel und Vias den Rückstrom beeinflussen
+- wie KiCad-Regeln und Herstellungsgrenzen zusammenwirken
 - welche Prüfungen vor Routing und Fertigung erforderlich sind
+
+Viele Lektionen enthalten eigene inline SVG-Skizzen, damit die App weiterhin vollständig lokal und ohne externe Bilddateien läuft.
 
 ## Neue Lektion hinzufügen
 
@@ -55,4 +69,4 @@ Die Lektionen erklären nicht nur Bauteilfunktionen, sondern insbesondere:
 
 ## Grundsatz
 
-Herstellerdatenblatt und Referenzlayout haben Vorrang vor pauschalen Regeln. ERC und DRC ersetzen kein fachliches Review.
+Herstellerdatenblatt, Fertigervorgaben und Referenzlayout haben Vorrang vor pauschalen Regeln. ERC und DRC ersetzen kein fachliches Review.
