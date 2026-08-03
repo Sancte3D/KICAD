@@ -43,20 +43,39 @@ Die aktuelle Ausbaustufe enthält 39 aufeinander aufbauende Lektionen:
 20. konkrete Zweilagen- und Vierlagen-Designrezepte
 21. Layer-Planungsübung für USB-C, MCU, Display und Audio
 
-Die Lektionen erklären nicht nur Bauteilfunktionen, sondern insbesondere:
+## Was jede technische Lektion erklärt
 
+- was das Bauteil, Netz oder Layer technisch macht
+- warum es benötigt wird
+- wo es im Schaltplan und PCB erscheint
 - welche Komponenten direkte Nachbarn sein sollen
+- wie herum ein polarisiertes Bauteil orientiert wird
 - welche Platzierung mechanisch vorgegeben ist
-- welche Schleifen klein bleiben müssen
+- welche Strom- und Signalschleifen klein bleiben müssen
 - von welchen Störquellen Abstand nötig ist
-- in welcher Reihenfolge Funktionsblöcke angeordnet werden
 - welche Layer welche physische und elektrische Aufgabe haben
 - welche Referenzfläche zu schnellen Signalen gehört
 - wie Layerwechsel und Vias den Rückstrom beeinflussen
 - wie KiCad-Regeln und Herstellungsgrenzen zusammenwirken
+- welche typischen Anfängerfehler auftreten
 - welche Prüfungen vor Routing und Fertigung erforderlich sind
 
-Viele Lektionen enthalten eigene inline SVG-Skizzen, damit die App weiterhin vollständig lokal und ohne externe Bilddateien läuft.
+## Skizzen und Visualisierungen
+
+Viele Lektionen enthalten eigene inline SVG-Skizzen. Dazu gehören:
+
+- Stromfluss und Ohmsches Gesetz
+- Komponenten-Nachbarschaften
+- Decoupling-Schleifen
+- Signal- und Rückstrompfade
+- Zwei- und Vierlagen-Stackups
+- Core, Prepreg und Kupferlagen
+- Through-, Blind- und Buried-Vias
+- Kupferzonen und Thermal Reliefs
+- Mask, Paste, Silkscreen, Fab und Courtyard
+- Platzierungsmatrizen und Funktionsblöcke
+
+Die SVGs sind direkt in den Snippets eingebettet. Dadurch bleibt die App vollständig lokal und benötigt keine externen Bilddateien.
 
 ## Neue Lektion hinzufügen
 
