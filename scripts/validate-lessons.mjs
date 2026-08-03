@@ -129,7 +129,8 @@ if (!electricity) {
   if (!electricity.diagram?.includes("Formelzeichen") || !electricity.diagram?.includes("Einheit")) {
     errors.push("Electricity lesson needs a symbol-to-unit reference table.");
   }
-  if (!electricity.pcb?.includes("Leiterbahnen") || !electricity.pcb?.includes("Wärme")) {
+  const mentionsConductor = electricity.pcb?.includes("Leiterbahnen") || electricity.pcb?.includes("Kupferbahnen");
+  if (!mentionsConductor || !electricity.pcb?.includes("Wärme")) {
     errors.push("Electricity lesson must connect the four quantities to PCB consequences.");
   }
 }
